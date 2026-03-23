@@ -7,7 +7,7 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageId>Philiprehberger.EncryptionKit</PackageId>
-    <Version>0.1.1</Version>
+    <Version>0.1.2</Version>
     <Authors>Philip Rehberger</Authors>
     <Description>Simple AES-256-GCM encryption and decryption with automatic key derivation, nonce management, and authenticated encryption.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>

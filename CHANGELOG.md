@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.2 (2026-03-22)
+
+- Fix README badge order to CI, NuGet, License
+
 ## 0.1.1 (2026-03-22)
 
 - Improve README compliance: remove Requirements section, simplify Development section, fix License format

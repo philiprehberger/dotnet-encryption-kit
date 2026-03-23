@@ -1,8 +1,8 @@
 # Philiprehberger.EncryptionKit
 
-[![NuGet](https://img.shields.io/nuget/v/Philiprehberger.EncryptionKit)](https://www.nuget.org/packages/Philiprehberger.EncryptionKit)
-[![Build](https://github.com/philiprehberger/dotnet-encryption-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/philiprehberger/dotnet-encryption-kit/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![CI](https://github.com/philiprehberger/dotnet-encryption-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/philiprehberger/dotnet-encryption-kit/actions/workflows/ci.yml)
+[![NuGet](https://img.shields.io/nuget/v/Philiprehberger.EncryptionKit.svg)](https://www.nuget.org/packages/Philiprehberger.EncryptionKit)
+[![License](https://img.shields.io/github/license/philiprehberger/dotnet-encryption-kit)](LICENSE)
 
 Simple AES-256-GCM encryption and decryption with automatic key derivation, nonce management, and authenticated encryption.
 
