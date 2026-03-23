@@ -6,10 +6,6 @@
 
 Simple AES-256-GCM encryption and decryption with automatic key derivation, nonce management, and authenticated encryption.
 
-## Requirements
-
-- .NET 8.0 or later
-
 ## Installation
 
 ```bash
@@ -72,9 +68,8 @@ var decrypted = Encryption.Decrypt(encrypted, "password", options);
 
 ```bash
 dotnet build src/Philiprehberger.EncryptionKit.csproj --configuration Release
-dotnet pack src/Philiprehberger.EncryptionKit.csproj --configuration Release -o out
 ```
 
 ## License
 
-[MIT](LICENSE)
+MIT
