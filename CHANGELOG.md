@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.3 (2026-03-23)
+
+- Shorten package description to meet 120-character limit
+
 ## 0.1.2 (2026-03-22)
 
 - Fix README badge order to CI, NuGet, License

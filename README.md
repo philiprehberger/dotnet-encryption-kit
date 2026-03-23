@@ -4,7 +4,7 @@
 [![NuGet](https://img.shields.io/nuget/v/Philiprehberger.EncryptionKit.svg)](https://www.nuget.org/packages/Philiprehberger.EncryptionKit)
 [![License](https://img.shields.io/github/license/philiprehberger/dotnet-encryption-kit)](LICENSE)
 
-Simple AES-256-GCM encryption and decryption with automatic key derivation, nonce management, and authenticated encryption.
+Simple AES-256-GCM encryption and decryption with automatic key derivation and nonce management.
 
 ## Installation
 
