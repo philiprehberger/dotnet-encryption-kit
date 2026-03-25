@@ -25,6 +25,9 @@ jobs:
       - name: Build
         run: dotnet build src/Philiprehberger.EncryptionKit.csproj --configuration Release --no-restore
 
+      - name: Test
+        run: dotnet test tests/Philiprehberger.EncryptionKit.Tests/Philiprehberger.EncryptionKit.Tests.csproj --configuration Release --no-restore
+
   publish:
     needs: build
     runs-on: ubuntu-latest
