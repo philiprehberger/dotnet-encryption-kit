@@ -3,6 +3,7 @@
 [![CI](https://github.com/philiprehberger/dotnet-encryption-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/philiprehberger/dotnet-encryption-kit/actions/workflows/ci.yml)
 [![NuGet](https://img.shields.io/nuget/v/Philiprehberger.EncryptionKit.svg)](https://www.nuget.org/packages/Philiprehberger.EncryptionKit)
 [![License](https://img.shields.io/github/license/philiprehberger/dotnet-encryption-kit)](LICENSE)
+[![Sponsor](https://img.shields.io/badge/sponsor-GitHub%20Sponsors-ec6cb9)](https://github.com/sponsors/philiprehberger)
 
 Simple AES-256-GCM encryption and decryption with automatic key derivation and nonce management.
 
@@ -72,4 +73,4 @@ dotnet build src/Philiprehberger.EncryptionKit.csproj --configuration Release
 
 ## License
 
-MIT
+[MIT](LICENSE)
