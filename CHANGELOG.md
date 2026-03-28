@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.2.0 (2026-03-28)
+
+- Add stream encryption and decryption via `EncryptStreamAsync` and `DecryptStreamAsync` for large file processing
+- Add key rotation via `ReEncrypt` to decrypt with old password and re-encrypt with new password
+- Add additional authenticated data (AAD) support via `AssociatedData` option in `EncryptionOptions`
+- Add encryption version header byte (0x01) prepended to all ciphertext output for format versioning
+- Add missing GitHub compliance files (issue templates, dependabot, PR template)
+- Add 8 badges and Support section to README
+
 ## 0.1.5 (2026-03-26)
 
 - Add Sponsor badge and fix License link format in README

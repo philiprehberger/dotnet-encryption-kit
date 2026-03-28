@@ -2,10 +2,14 @@
 
 [![CI](https://github.com/philiprehberger/dotnet-encryption-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/philiprehberger/dotnet-encryption-kit/actions/workflows/ci.yml)
 [![NuGet](https://img.shields.io/nuget/v/Philiprehberger.EncryptionKit.svg)](https://www.nuget.org/packages/Philiprehberger.EncryptionKit)
+[![GitHub release](https://img.shields.io/github/v/release/philiprehberger/dotnet-encryption-kit)](https://github.com/philiprehberger/dotnet-encryption-kit/releases)
+[![Last updated](https://img.shields.io/github/last-commit/philiprehberger/dotnet-encryption-kit)](https://github.com/philiprehberger/dotnet-encryption-kit/commits/main)
 [![License](https://img.shields.io/github/license/philiprehberger/dotnet-encryption-kit)](LICENSE)
+[![Bug Reports](https://img.shields.io/github/issues/philiprehberger/dotnet-encryption-kit/bug)](https://github.com/philiprehberger/dotnet-encryption-kit/issues?q=is%3Aissue+is%3Aopen+label%3Abug)
+[![Feature Requests](https://img.shields.io/github/issues/philiprehberger/dotnet-encryption-kit/enhancement)](https://github.com/philiprehberger/dotnet-encryption-kit/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement)
 [![Sponsor](https://img.shields.io/badge/sponsor-GitHub%20Sponsors-ec6cb9)](https://github.com/sponsors/philiprehberger)
 
-Simple AES-256-GCM encryption and decryption with automatic key derivation and nonce management.
+AES-256-GCM encryption and decryption with key derivation, stream processing, key rotation, and authenticated data support.
 
 ## Installation
 
@@ -14,8 +18,6 @@ dotnet add package Philiprehberger.EncryptionKit
 ```
 
 ## Usage
-
-### Encrypt and Decrypt Strings
 
 ```csharp
 using Philiprehberger.EncryptionKit;
@@ -37,6 +39,44 @@ byte[] encrypted = Encryption.Encrypt(data, "my-secret-password");
 byte[] decrypted = Encryption.Decrypt(encrypted, "my-secret-password");
 ```
 
+### Stream Encryption
+
+```csharp
+using Philiprehberger.EncryptionKit;
+
+await using var inputFile = File.OpenRead("largefile.dat");
+await using var encryptedFile = File.Create("largefile.enc");
+
+await Encryption.EncryptStreamAsync(inputFile, encryptedFile, "my-secret-password");
+
+encryptedFile.Position = 0;
+await using var decryptedFile = File.Create("largefile.dec");
+
+await Encryption.DecryptStreamAsync(encryptedFile, decryptedFile, "my-secret-password");
+```
+
+### Key Rotation
+
+```csharp
+using Philiprehberger.EncryptionKit;
+
+var encrypted = Encryption.Encrypt("sensitive data", "old-password");
+var rotated = Encryption.ReEncrypt(encrypted, "old-password", "new-password");
+var decrypted = Encryption.Decrypt(rotated, "new-password");
+```
+
+### Additional Authenticated Data (AAD)
+
+```csharp
+using Philiprehberger.EncryptionKit;
+
+var aad = new byte[] { 0x01, 0x02, 0x03 };
+var options = new EncryptionOptions(AssociatedData: aad);
+
+var encrypted = Encryption.Encrypt("authenticated data", "password", options);
+var decrypted = Encryption.Decrypt(encrypted, "password", options);
+```
+
 ### Custom Options
 
 ```csharp
@@ -50,26 +90,44 @@ var decrypted = Encryption.Decrypt(encrypted, "password", options);
 
 ## API
 
+### `Encryption`
+
 | Method | Description |
 |--------|-------------|
-| `Encryption.Encrypt(string, string)` | Encrypts a string, returns base64-encoded ciphertext |
-| `Encryption.Encrypt(string, string, EncryptionOptions)` | Encrypts a string with custom options |
-| `Encryption.Decrypt(string, string)` | Decrypts a base64-encoded ciphertext string |
-| `Encryption.Decrypt(string, string, EncryptionOptions)` | Decrypts a string with custom options |
-| `Encryption.Encrypt(byte[], string)` | Encrypts a byte array |
-| `Encryption.Encrypt(byte[], string, EncryptionOptions)` | Encrypts a byte array with custom options |
-| `Encryption.Decrypt(byte[], string)` | Decrypts a byte array |
-| `Encryption.Decrypt(byte[], string, EncryptionOptions)` | Decrypts a byte array with custom options |
+| `Encrypt(string, string)` | Encrypts a string, returns base64-encoded ciphertext |
+| `Encrypt(string, string, EncryptionOptions)` | Encrypts a string with custom options |
+| `Decrypt(string, string)` | Decrypts a base64-encoded ciphertext string |
+| `Decrypt(string, string, EncryptionOptions)` | Decrypts a string with custom options |
+| `Encrypt(byte[], string)` | Encrypts a byte array |
+| `Encrypt(byte[], string, EncryptionOptions)` | Encrypts a byte array with custom options |
+| `Decrypt(byte[], string)` | Decrypts a byte array |
+| `Decrypt(byte[], string, EncryptionOptions)` | Decrypts a byte array with custom options |
+| `ReEncrypt(string, string, string, EncryptionOptions?)` | Decrypts with old password and re-encrypts with new password |
+| `EncryptStreamAsync(Stream, Stream, string, EncryptionOptions?, CancellationToken)` | Encrypts a stream in chunks |
+| `DecryptStreamAsync(Stream, Stream, string, EncryptionOptions?, CancellationToken)` | Decrypts a stream in chunks |
 
-| Record | Fields |
-|--------|--------|
-| `EncryptionOptions` | `Iterations` (default 100,000), `SaltLength` (default 16), `NonceLength` (default 12), `TagLength` (default 16) |
+### `EncryptionOptions`
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `Iterations` | `int` | `100_000` | PBKDF2 iterations for key derivation |
+| `SaltLength` | `int` | `16` | Random salt length in bytes |
+| `NonceLength` | `int` | `12` | Random nonce length in bytes |
+| `TagLength` | `int` | `16` | Authentication tag length in bytes |
+| `AssociatedData` | `byte[]?` | `null` | Optional additional authenticated data for AES-GCM |
 
 ## Development
 
 ```bash
 dotnet build src/Philiprehberger.EncryptionKit.csproj --configuration Release
 ```
+
+## Support
+
+If you find this package useful, consider giving it a star on GitHub — it helps motivate continued maintenance and development.
+
+[![LinkedIn](https://img.shields.io/badge/Philip%20Rehberger-LinkedIn-0A66C2?logo=linkedin)](https://www.linkedin.com/in/philiprehberger)
+[![More packages](https://img.shields.io/badge/more-open%20source%20packages-blue)](https://philiprehberger.com/open-source-packages)
 
 ## License
 
