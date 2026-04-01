@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.0 (2026-03-31)
+
+- Add KeyGenerator for secure key, nonce, and salt generation
+- Add SealedEnvelope for self-describing portable encrypted payloads
+- Add EncryptionAlgorithm enum for algorithm identification
+
 ## 0.2.1 (2026-03-31)
 
 - Standardize README to 3-badge format with emoji Support section

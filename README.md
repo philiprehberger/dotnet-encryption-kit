@@ -4,7 +4,7 @@
 [![NuGet](https://img.shields.io/nuget/v/Philiprehberger.EncryptionKit.svg)](https://www.nuget.org/packages/Philiprehberger.EncryptionKit)
 [![Last updated](https://img.shields.io/github/last-commit/philiprehberger/dotnet-encryption-kit)](https://github.com/philiprehberger/dotnet-encryption-kit/commits/main)
 
-AES-256-GCM encryption and decryption with key derivation, stream processing, key rotation, and authenticated data support.
+AES-256-GCM encryption with key generation, sealed envelopes, PBKDF2 key derivation, streaming, and key rotation.
 
 ## Installation
 
@@ -72,6 +72,34 @@ var encrypted = Encryption.Encrypt("authenticated data", "password", options);
 var decrypted = Encryption.Decrypt(encrypted, "password", options);
 ```
 
+### Key Generation
+
+```csharp
+using Philiprehberger.EncryptionKit;
+
+byte[] key = KeyGenerator.GenerateKey();       // 256-bit key
+byte[] key128 = KeyGenerator.GenerateKey(128); // 128-bit key
+byte[] nonce = KeyGenerator.GenerateNonce();   // 12-byte nonce
+byte[] salt = KeyGenerator.GenerateSalt();     // 16-byte salt
+```
+
+### Sealed Envelopes
+
+```csharp
+using Philiprehberger.EncryptionKit;
+
+// Seal plaintext into a self-describing envelope
+byte[] envelope = SealedEnvelope.Seal("sensitive data", "my-password");
+
+// Open the envelope to get plaintext back
+string decrypted = SealedEnvelope.OpenString(envelope, "my-password");
+
+// Works with byte arrays too
+byte[] data = new byte[] { 0x01, 0x02, 0x03 };
+byte[] sealed = SealedEnvelope.Seal(data, "my-password");
+byte[] opened = SealedEnvelope.Open(sealed, "my-password");
+```
+
 ### Custom Options
 
 ```csharp
@@ -100,6 +128,29 @@ var decrypted = Encryption.Decrypt(encrypted, "password", options);
 | `ReEncrypt(string, string, string, EncryptionOptions?)` | Decrypts with old password and re-encrypts with new password |
 | `EncryptStreamAsync(Stream, Stream, string, EncryptionOptions?, CancellationToken)` | Encrypts a stream in chunks |
 | `DecryptStreamAsync(Stream, Stream, string, EncryptionOptions?, CancellationToken)` | Decrypts a stream in chunks |
+
+### `KeyGenerator`
+
+| Method | Description |
+|--------|-------------|
+| `GenerateKey(int)` | Generates a cryptographically secure random key (128, 192, or 256 bits) |
+| `GenerateNonce(int)` | Generates a cryptographically secure random nonce |
+| `GenerateSalt(int)` | Generates a cryptographically secure random salt |
+
+### `SealedEnvelope`
+
+| Method | Description |
+|--------|-------------|
+| `Seal(byte[], string, EncryptionOptions?)` | Encrypts data into a self-describing envelope |
+| `Seal(string, string, EncryptionOptions?)` | Encrypts a string into a self-describing envelope |
+| `Open(byte[], string, byte[]?)` | Opens a sealed envelope and returns decrypted bytes |
+| `OpenString(byte[], string, byte[]?)` | Opens a sealed envelope and returns a decrypted string |
+
+### `EncryptionAlgorithm`
+
+| Value | Description |
+|-------|-------------|
+| `AesGcm` | AES-256-GCM authenticated encryption |
 
 ### `EncryptionOptions`
 
